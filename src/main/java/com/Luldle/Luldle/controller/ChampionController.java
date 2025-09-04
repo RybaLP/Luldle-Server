@@ -1,8 +1,8 @@
 package com.Luldle.Luldle.controller;
 
-
 import com.Luldle.Luldle.dto.*;
 import com.Luldle.Luldle.model.Champion;
+import com.Luldle.Luldle.repository.ChampionRepository;
 import com.Luldle.Luldle.service.ChampionService;
 import com.Luldle.Luldle.service.JwtService;
 import jakarta.validation.Valid;
@@ -19,9 +19,12 @@ public class ChampionController {
     private final ChampionService championService;
     private final JwtService jwtService;
 
-    public ChampionController(ChampionService championService, JwtService jwtService){
+    private final ChampionRepository championRepository;
+
+    public ChampionController(ChampionService championService, JwtService jwtService,ChampionRepository championRepository){
         this.championService = championService;
         this.jwtService = jwtService;
+        this.championRepository = championRepository;
     }
 
     @GetMapping("/generate")
@@ -58,11 +61,9 @@ public class ChampionController {
         return ResponseEntity.ok(response);
     }
 
-
-    @PostMapping("/suggest")
-    public ResponseEntity<SuggestChampionResponse> suggestChampions(@Valid @RequestBody SuggestChampionRequest championNameFragment) {
-        SuggestChampionResponse response = championService.suggestChampions(championNameFragment.getChampionNameFragment());
-        return ResponseEntity.ok(response);
+    @GetMapping("/findall")
+    public ResponseEntity<List<Champion>> findAllChampions(){
+        List<Champion> allChampions = championRepository.findAll();
+        return ResponseEntity.ok(allChampions);
     }
 }
-

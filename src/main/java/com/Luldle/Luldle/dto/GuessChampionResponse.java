@@ -1,5 +1,6 @@
 package com.Luldle.Luldle.dto;
 
+import com.Luldle.Luldle.enums.YearEnum;
 import com.Luldle.Luldle.model.Champion;
 
 public class GuessChampionResponse {
@@ -13,6 +14,8 @@ public class GuessChampionResponse {
     private boolean isCorrectYearOfRelease;
     private boolean isCorrectAnswer;
 
+    private YearEnum yearHint;
+
     private Champion championObject;
 
     public void setChampionObject(Champion championObject){
@@ -21,6 +24,14 @@ public class GuessChampionResponse {
 
     public Champion getChampionObject(){
         return this.championObject;
+    }
+
+    public void setYearHint(YearEnum yearHint){
+        this.yearHint = yearHint;
+    }
+
+    public YearEnum getYearHint(){
+        return this.yearHint;
     }
 
     public boolean isCorrectResource() {

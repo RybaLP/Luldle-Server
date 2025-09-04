@@ -2,13 +2,11 @@ package com.Luldle.Luldle.service;
 
 
 import com.Luldle.Luldle.dto.GuessChampionResponse;
-import com.Luldle.Luldle.dto.SuggestChampionResponse;
+import com.Luldle.Luldle.enums.YearEnum;
 import com.Luldle.Luldle.repository.ChampionRepository;
 import com.Luldle.Luldle.model.Champion;
 import org.springframework.stereotype.Service;
 
-import java.rmi.server.ExportException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,6 +83,18 @@ public class ChampionService {
             System.out.println("guessed champion" + guessedChampion);
             System.out.println("generated c" + generatedChampion.getName());
 
+            if (generatedChampion.getYear_of_release() > guessedChampion.getYear_of_release()){
+                response.setYearHint(YearEnum.UP);
+            }
+
+            if (generatedChampion.getYear_of_release() == guessedChampion.getYear_of_release()){
+                response.setYearHint(YearEnum.CORRECT);
+            }
+
+            if (generatedChampion.getYear_of_release() < guessedChampion.getYear_of_release()){
+                response.setYearHint(YearEnum.DOWN);
+            }
+
             return response;
 
         } catch(Exception e) {
@@ -94,13 +104,4 @@ public class ChampionService {
         }
 
     }
-
-    public SuggestChampionResponse suggestChampions (String championNameFragment) {
-        List<Champion> suggestedChampions = this.championRepository.findByNameStartingWithIgnoreCase(championNameFragment);
-        SuggestChampionResponse response = new SuggestChampionResponse();
-
-        response.setSuggestChampionResponse(suggestedChampions);
-        return response;
-    }
-
 }
